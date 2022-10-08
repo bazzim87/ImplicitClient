@@ -27,7 +27,7 @@
 
       $.ajax({
         // url: `https://api.${ENVIRONMENT}/api/v2/users/me`,
-        url: `https://api.${ENVIRONMENT}/ /api/v2/organizations/me`,
+        url: `https://api.${ENVIRONMENT}/api/v2/organizations/me`,
         type: "GET",
         beforeSend: function (xhr) {
           xhr.setRequestHeader("Authorization", "bearer " + token);
