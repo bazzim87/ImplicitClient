@@ -21,6 +21,7 @@
       
       var userApi = new platformClient.UsersApi();
      var notificationsApi = new platformClient.NotificationsApi();
+      console.log ("login try");
       
       client.loginImplicitGrant(clientId, redirectUri, { state: state})
           .then((data) => {
