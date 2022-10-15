@@ -11,9 +11,33 @@
     $(document).ready(function(){
     
       console.log("testing!!!");
-    console.log("Client App Version: " + window.purecloud.apps.ClientApp.version);
-     
-    
+      console.log("Client App Version: " + window.purecloud.apps.ClientApp.version);
+      
+      var platformClient = require('platformClient');
+      var client = platformClient.ApiClient.instance;
+      var clientId= 'affa3a5c-1f51-4611-8867-1af88db9ef29';
+      var redirectUri='https://bazzim87.github.io/ImplicitClient/index.html';
+      var state = "ImplicitClient";
+      
+      var userApi = new platformClient.UsersApi();
+     var notificationsApi = new platformClient.NotificationsApi();
+      
+      client.loginImplicitGrant(clientId, redirectUri, { state: state}).then
+    client.loginClientCredentialsGrant(clientId, clientSecret)
+          .then(() => {
+            // Make request to GET /api/v2/authorization/permissions
+            return authorizationApi.getAuthorizationPermissions();
+          })
+          .then((permissions) => {
+            // Handle successful result
+            console.log(permissions);
+            console.log("Client Access done");
+          })
+          .catch((err) => {
+            // Handle failure response
+            console.log(err);
+            console.log("Client Access error");
+          });
     
     })
     console.log("End Testing!!!");
