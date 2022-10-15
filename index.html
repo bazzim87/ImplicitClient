@@ -22,8 +22,7 @@
       var userApi = new platformClient.UsersApi();
      var notificationsApi = new platformClient.NotificationsApi();
       
-      client.loginImplicitGrant(clientId, redirectUri, { state: state}).then
-    client.loginClientCredentialsGrant(clientId, clientSecret)
+      client.loginImplicitGrant(clientId, redirectUri, { state: state})
           .then(() => {
             // Make request to GET /api/v2/authorization/permissions
             return authorizationApi.getAuthorizationPermissions();
