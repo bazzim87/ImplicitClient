@@ -23,22 +23,12 @@
      var notificationsApi = new platformClient.NotificationsApi();
       
       client.loginImplicitGrant(clientId, redirectUri, { state: state})
-          .then(() => {
-            // Make request to GET /api/v2/authorization/permissions
-            return authorizationApi.getAuthorizationPermissions();
-          })
-          .then((permissions) => {
-            // Handle successful result
-            console.log(permissions);
-            console.log("Client Access done");
-          })
-          .catch((err) => {
-            // Handle failure response
-            console.log(err);
-            console.log("Client Access error");
+          .then((data) => {
+           console.log("Authenticated: " + data);
           });
-    
-    })
+         
+    });
+  
     console.log("End Testing!!!");
   </script>
 </body>
