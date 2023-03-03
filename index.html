@@ -1,55 +1,94 @@
-<head>
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="https://sdk-cdn.mypurecloud.com/javascript/142.0.0/purecloud-platform-client-v2.min.js"></script>
-  <link rel="stylesheet" href="./style.css">
-</head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Implicit oAuth Testing</title>
+    <script src="https://sdk-cdn.mypurecloud.com/javascript/142.0.0/purecloud-platform-client-v2.min.js"></script>
+    <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.4.0/purecloud-client-app-sdk-bb974a18.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
 
+    <style>
+      .groupbox {
+        border: 2px solid #1c2c54;
+        background-color: #1c2c54;
+        color: white;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+      }
+      .label {
+        display: inline-block;
+        margin-bottom: 5px;
+      }
+      .textbox {
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+        background-color: #f5f6fa;
+        margin-bottom: 10px;
+        width: 200px;
+      }
+    </style>
+  </head>
 
-<body>
-     
-    <form>
-      <h3>Question 1</h3>
-      <input type="radio" name="question1" value="true" /> True<br />
-      <input type="radio" name="question1" value="false" /> False<br />
-      <textarea name="comments" placeholder="Enter comments here"></textarea>
-      <br />
-      <h3>Question 2</h3>
-      <input type="radio" name="question2" value="true" /> True<br />
-      <input type="radio" name="question2" value="false" /> False<br />
-      <textarea name="comments" placeholder="Enter comments here"></textarea>
-      <br />
-      <h3>Question 3</h3>
-      <input type="radio" name="question3" value="true" /> True<br />
-      <input type="radio" name="question3" value="false" /> False<br />
-      <textarea name="comments" placeholder="Enter comments here"></textarea>
-      <br />
-      <h3>Question 4</h3>
-      <input type="radio" name="question4" value="true" /> True<br />
-      <input type="radio" name="question4" value="false" /> False<br />
-      <textarea name="comments" placeholder="Enter comments here"></textarea>
-      <br />
-      <input type="submit" value="Submit" />
-    </form>
-  
-  
-  
-  <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.4.0/purecloud-client-app-sdk.js"></script>
-  <script>
-    $(document).ready(function(){
-    
-            console.log("Function is ready!!!");
-      
-      console.log("Client App Version: " + window.purecloud.apps.ClientApp.version);
-      console.log("Client pcEnvironment: " + window.purecloud.apps.ClientApp.pcEnvironment);
-      
-      let myClientApp = new window.purecloud.apps.ClientApp();
-      
-      console.log("PureCloud Environemnt: " + myClientApp.pcEnvironment);
-     
- 
-      
-    });
-  
-   
-  </script>
-</body>
+  <body>
+    <p>Testing</p>
+
+    <div class="groupbox">
+      <label class="label">Label 1:</label>
+      <input type="text" class="textbox" /><br />
+      <label class="label">Label 2:</label>
+      <input type="text" class="textbox" />
+    </div>
+
+    <script></script>
+    <script>
+      //Implicit grant credentials
+      const CLIENT_ID = "70013488-a52e-4b82-949a-c6226bf8c273";
+
+      //Genesys Cloud environment
+      const ENVIRONMENT = "mypurecloud.de";
+
+      function getParameterByName(name) {
+        name = name.replace(/[\\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\#&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.hash);
+        return results === null
+          ? ""
+          : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+      if (window.location.hash) {
+        console.log(location.hash);
+        var token = getParameterByName("access_token");
+
+        $.ajax({
+          url: `https://api.${ENVIRONMENT}/api/v2/users/me`,
+          type: "GET",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "bearer " + token);
+          },
+          success: function (data) {
+            console.log(data);
+          },
+        });
+
+        location.hash = "";
+      } else {
+        var queryStringData = {
+          response_type: "token",
+          client_id: CLIENT_ID,
+          redirect_uri: "http://localhost/oauth-implicit.html",
+        };
+
+        window.location.replace(
+          `https://login.${ENVIRONMENT}/oauth/authorize?` +
+            jQuery.param(queryStringData)
+        );
+      }
+    </script>
+  </body>
+</html>
