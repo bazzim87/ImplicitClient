@@ -44,7 +44,22 @@
       <input type="text" class="textbox" />
     </div>
 
-    <script></script>
+    <script>
+      $(document).ready(function(){
+    
+            console.log("Function is ready!!!");
+      
+      console.log("Client App Version: " + window.purecloud.apps.ClientApp.version);
+      console.log("Client pcEnvironment: " + window.purecloud.apps.ClientApp.pcEnvironment);
+      
+      let myClientApp = new window.purecloud.apps.ClientApp();
+      
+      console.log("PureCloud Environemnt: " + myClientApp.pcEnvironment);
+     
+ 
+      
+    });
+    </script>
     <script>
       //Implicit grant credentials
       const CLIENT_ID = "70013488-a52e-4b82-949a-c6226bf8c273";
