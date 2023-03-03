@@ -45,13 +45,53 @@
     </div>
 
    <script>
-      $(document).ready(function () {
-        console.log("Function is ready!!!");
-
-       
-
       
-      });
+     //Implicit grant credentials
+        const CLIENT_ID = "70013488-a52e-4b82-949a-c6226bf8c273";
+
+        //Genesys Cloud environment
+        const ENVIRONMENT = "mypurecloud.de";
+
+        function getParameterByName(name) {
+          name = name.replace(/[\\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\#&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.hash);
+          return results === null
+            ? ""
+            : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        if (window.location.hash) {
+          console.log(location.hash);
+          var token = getParameterByName("access_token");
+
+          $.ajax({
+            url: `https://api.${ENVIRONMENT}/api/v2/users/me`,
+            type: "GET",
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader("Authorization", "bearer " + token);
+            },
+            success: function (data) {
+              console.log(data);
+              console.log(data.ENVIRONMENT);
+            },
+          });
+
+          location.hash = "";
+        } else {
+          var queryStringData = {
+            response_type: "token",
+            client_id: CLIENT_ID,
+            redirect_uri: "https://bazzim87.github.io/ImplicitClient/",
+          };
+
+          window.location.replace(
+            `https://login.${ENVIRONMENT}/oauth/authorize?` +
+              jQuery.param(queryStringData)
+          );
+        }
+     
+     
     </script>
     
   </body>
